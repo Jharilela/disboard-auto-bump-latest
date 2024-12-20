@@ -1,0 +1,31 @@
+{
+    "name": "Disboard Auto Bump",
+    "version": "3.8.0",
+    "description": "Not against Discord's ToS!",
+    "manifest_version": 2,
+    "icons": {"128": "images/icon_128.png"},
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "disboardautobump@block.com"
+      }
+    },
+    "browser_action": {
+        "default_icon": "images/icon.png",
+        "default_popup": "popup.html"
+    },
+    "permissions": ["activeTab", "storage", "webRequest", "webRequestBlocking", "notifications", "*://disboard.org/*", "tabs", "contextMenus"],
+    "background": {
+      "scripts": ["background.js"],
+      "persistent": true
+    },
+    "content_scripts": [
+        {
+          "matches": ["*://disboard.org/*dashboard/servers", "*://disboard.org/*dashboard/servers/", "*://disboard.org/*dashboard/servers?*", "*://disboard.org/*dashboard/servers/?"],
+          "js": ["libs/sweetalert2.all.min.js", "libs/jquery.min.js", "content.js"]
+        }, {
+          "run_at": "document_start",
+          "matches": ["*://disboard.org/server/recaptcha-bump*"],
+          "js": ["content2.js"]
+        }
+      ]
+}

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Disboard Auto Bump</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src='libs/jquery.min.js'></script>
+    <script src='libs/popper.min.js'></script>
+    <script src='libs/bootstrap.min.js'></script>
+    <link rel="stylesheet" href="libs/bootstrap.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
+    <style>
+        html, body {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 14px;
+            min-height: 180px;
+            padding: 0;
+            width: 384px;
+            overflow: hidden;
+        }
+        
+        h1 {
+            font-family: 'Menlo', monospace;
+            font-size: 20px;
+            font-weight: 400;
+            margin: 0;
+            color: #001fdf;
+        }
+
+        a:link, a:visited {
+            color:rgb(0, 64, 184);
+            outline: 0;
+        }
+
+        img {
+            width: 30px;
+        }
+
+        .modal-header {
+            align-items: center;
+            border-bottom: 0.5px solid #dadada;
+        }
+
+        .modal-content {
+            padding: 0 22px;
+        }
+
+        .modal-icons {
+            border-top: 0.5px solid #dadada;
+            height: 50px;
+            width: 100%;
+        }
+        .logo {
+            padding: 16px;
+        }
+
+        .logo-icon {
+            vertical-align: text-bottom;
+            margin-right: 12px;
+        }
+
+        .version {
+            color: #444;
+            font-size: 18px;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 22px;
+        }
+
+        .flex {
+            width: 120px;
+        }
+
+        .flex:hover .fa, .flex:hover .fab, .flex:hover .fas {
+            transition: color 0.2s ease-in-out;
+            color: #99d6ff;
+        }
+
+        .flex .fa, .flex .fab, .flex .fas {
+            font-size: 40px;
+            color: #0099ff;
+        }
+        
+        .form-switch {
+            display: inline-block;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            padding: 10px 25px;
+            padding-left: 45px;
+        }
+
+        .form-switch i {
+            position: relative;
+            display: inline-block;
+            margin-right: .5rem;
+            width: 46px;
+            height: 26px;
+            background-color: #e6e6e6;
+            border-radius: 23px;
+            vertical-align: text-bottom;
+            transition: all 0.3s linear;
+        }
+
+        .form-switch i::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            width: 42px;
+            height: 22px;
+            background-color: #fff;
+            border-radius: 11px;
+            transform: translate3d(2px, 2px, 0) scale3d(1, 1, 1);
+            transition: all 0.25s linear;
+        }
+
+        .form-switch i::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            width: 22px;
+            height: 22px;
+            background-color: #fff;
+            border-radius: 11px;
+            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24);
+            transform: translate3d(2px, 2px, 0);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .form-switch:active i::after {
+            width: 28px;
+            transform: translate3d(2px, 2px, 0);
+        }
+
+        .form-switch:active input:checked + i::after { 
+            transform: translate3d(16px, 2px, 0);
+        }
+
+        .form-switch input {
+            display: none;
+        }
+
+        .form-switch input:checked + i {
+            background-color: #4BD763;
+        }
+
+        .form-switch input:checked + i::before {
+            transform: translate3d(18px, 2px, 0) scale3d(0, 0, 0);
+        }
+
+        .form-switch input:checked + i::after {
+            transform: translate3d(22px, 2px, 0);
+        }
+    </style>
+</head>
+<body>
+    <div class="modal-header">
+        <h1 class="logo">
+            <img src="images/disboard-auto-bump-logo.png" alt="Disboard Auto Bump" class="logo-icon">
+            Disboard Auto Bump
+            <span class="version">(0.0.0)</span>
+        </h1>
+    </div>
+    <div class="modal-content">
+        <p>How to use:</p>
+        <ol><li><p>Go onto <a href="https://disboard.org/dashboard/servers" target="_blank">https://disboard.org/dashboard/servers</a>.</p></li><li><p>Click on the 🅱️ icon to pick which server to bump in that tab.</p></li><li><p>Keep it open or it will not work. TIP: Pin the tab! (Right Click &gt; "Pin Tab")</p></li><li><p>[Multibumping!] Optionally have multiple tabs opened for different servers!</p></li></ol>
+        <p style="color:lightslategray; margin-block-end: 5px;"><b>Safety Mode - </b>Recommended to keep it enabled - When enabled, will bump the server every 2-2.5 hours rather than *exactly* every 2 hours, to avoid being delisted of Disboard.</p>
+        <label class="form-switch">
+        <input id="toggle" type="checkbox">
+        <i></i>
+        Toggle Safety Mode
+        </label>
+        <label class="form-switch">
+        <input id="toggletwo" type="checkbox">
+        <i></i>
+        Update Checks (every 6 hours)
+        </label>
+    </div>
+    <div class="modal-icons">
+        <div class="flex-container">
+            <div class="flex">
+                <a href="https://theblockbuster1.github.io/" target="_blank">
+                    <i data-toggle="tooltip" data-placement="top" title="Website" class="fa fa-globe"></i>
+                </a>
+            </div>
+
+            <div class="flex">
+                <a href="https://theblockbuster1.github.io/youtube" target="_blank">
+                    <i data-toggle="tooltip" data-placement="top" title="YouTube" class="fab fa-youtube"></i>
+                </a>
+            </div>
+            <div class="flex">
+                <a href="https://theblockbuster1.github.io/twitter" target="_blank">
+                    <i data-toggle="tooltip" data-placement="top" title="Twitter" class="fab fa-twitter"></i>
+                </a>
+            </div>
+            <div class="flex">
+                <a href="https://theblockbuster1.github.io/discord" target="_blank">
+                    <i data-toggle="tooltip" data-placement="top" title="Discord" class="fab fa-discord"></i>
+                </a>
+            </div>
+            <div class="flex">
+                <a href="https://github.com/Theblockbuster1" target="_blank">
+                    <i data-toggle="tooltip" data-placement="top" title="Github" class="fab fa-github"></i>
+                </a>
+            </div>
+            <div class="flex">
+                <a href="https://theblockbuster1.github.io/donate" target="_blank">
+                    <i data-toggle="tooltip" data-placement="top" title="Support the dev!" class="fas fa-money-bill-alt"></i>
+                </a>
+            </div>
+    </div>
+</body>
+<script src='popup.js'></script>
+</html>
